@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Oracle 將 A table的資料複製到 B table</title>
+    <url>/SQL/20210513/1337088916/</url>
+    <content><![CDATA[<p>如題，假設目前要將個人資料(Person)複製到客戶資料表(Customer)應該要怎麼做呢？</p><p>以下使用這個網站來進行SQL的測試，這個網站支援很多種類型的資料庫<br><a href="http://sqlfiddle.com/" target="_blank" rel="noopener">http://sqlfiddle.com/</a></p><a id="more"></a>
+
+<h2 id="Create-Table"><a href="#Create-Table" class="headerlink" title="Create Table"></a>Create Table</h2><p>DDL Create Table</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE TABLE Person (</span><br><span class="line">  National_Id varchar(12),</span><br><span class="line">  Name varchar(50),</span><br><span class="line">  Address varchar(255),</span><br><span class="line">  Phone varchar(20)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">CREATE TABLE Customer (</span><br><span class="line">  Cust_Id varchar(12),</span><br><span class="line">  Lvl varchar(2),</span><br><span class="line">  Name varchar(50),</span><br><span class="line">  Address varchar(255),</span><br><span class="line">  Phone varchar(20)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="建測試資料"><a href="#建測試資料" class="headerlink" title="建測試資料"></a>建測試資料</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">INSERT INTO Person (National_Id, Name, Address, Phone)</span><br><span class="line">VALUES (&apos;A123456789&apos;, &apos;YOYO&apos;, &apos;OO路300號&apos;, &apos;12345678&apos;);</span><br></pre></td></tr></table></figure>
+
+<p>如圖，DDL Script跟insert SQL寫在左邊<br><img src="https://i.imgur.com/3tjoHvw.png" alt></p>
+<p>如此一來就會建立兩張table，並在Person table中加入一筆資料</p>
+<p>右邊是查詢語句，下面是結果</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from Person;</span><br><span class="line">select * from Customer;</span><br></pre></td></tr></table></figure>
+
+<h2 id="複製資料"><a href="#複製資料" class="headerlink" title="複製資料"></a>複製資料</h2><p>將A table的資料複製到B table，可以將insert跟select組在一起，如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">INSERT INTO Customer (Cust_Id, Lvl ,Name, Address, Phone)</span><br><span class="line">SELECT National_Id,&apos;L1&apos;,Name, Address, Phone FROM Person;</span><br></pre></td></tr></table></figure>
+
+<p>查看結果，資料已成功複製過去<br><img src="https://i.imgur.com/NwB1Cyz.png" alt></p>
+<p>不過這個寫法僅限於B table已存在的狀態下</p>
+<p>如果是B table不存在的話，可以這樣做</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">create table Customer as</span><br><span class="line">SELECT National_Id,Name, Address, Phone FROM Person;</span><br></pre></td></tr></table></figure>
+
+<p>執行結果如圖<br><img src="https://i.imgur.com/psi687x.png" alt></p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ol>
+<li>SQL Fiddle 使用教學<a href="https://www.jinnsblog.com/2013/09/sql-fiddle-test-sql-syntax-online.html" target="_blank" rel="noopener">https://www.jinnsblog.com/2013/09/sql-fiddle-test-sql-syntax-online.html</a></li>
+<li>Create table DDL <a href="https://www.fooish.com/sql/create-table.html" target="_blank" rel="noopener">https://www.fooish.com/sql/create-table.html</a></li>
+<li>兩種複製資料的做法<a href="https://stackoverflow.com/questions/2250196/select-into-using-oracle" target="_blank" rel="noopener">https://stackoverflow.com/questions/2250196/select-into-using-oracle</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>SQL</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>Oracle</tag>
+        <tag>Insert</tag>
+        <tag>Copy</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>換台電腦重新建置寫hexo blog 環境</title>
     <url>/hexo/20200308/3746848229/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>要做這件事的前提是要有備份之前的原始檔，被push上去github的已經是編譯過後的檔案，<del>所以沒有留原始檔，大概就是沒救了</del></p><a id="more"></a>
