@@ -404,7 +404,7 @@
 
 <p><img src="https://i.imgur.com/oJlMxJC.png" alt></p>
 <h4 id="設定帳戶資料"><a href="#設定帳戶資料" class="headerlink" title="設定帳戶資料"></a>設定帳戶資料</h4><p><img src="https://i.imgur.com/hQ1Chqe.png" alt></p>
-<h4 id="申請完成後就會看到這個畫面"><a href="#申請完成後就會看到這個畫面" class="headerlink" title="申請完成後就會看到這個畫面"></a>申請完成後就會看到這個畫面</h4><p>用法是將這一串code放進網頁中<br><img src="https://i.imgur.com/zoEHFPe.png" alt></p>
+<h4 id="申請完成後就會看到這個畫面"><a href="#申請完成後就會看到這個畫面" class="headerlink" title="申請完成後就會看到這個畫面"></a>申請完成後就會看到這個畫面</h4><p>用法是將這一串code放進網頁中<br>設定路徑在⁨ themes⁩ ▸ ⁨next⁩ ▸ ⁨layout⁩ ▸ ⁨_third-party⁩ ▸ ⁨analytics⁩⁩ ▸ google-analytics.swig<br><img src="https://i.imgur.com/zoEHFPe.png" alt></p>
 <h2 id="網頁加入GA"><a href="#網頁加入GA" class="headerlink" title="網頁加入GA"></a>網頁加入GA</h2><h4 id="修改config"><a href="#修改config" class="headerlink" title="修改config"></a>修改config</h4><p>設定next theme下的config.yml<br>搜尋<code>google_analytics</code>後修改<code>tracking_id</code><br>把剛剛畫面中的這串ID貼入<br><img src="https://i.imgur.com/NvfrqKY.png" alt><br>修改結果：<br><img src="https://i.imgur.com/PvgpBAY.png" alt></p>
 <p>修改好後重新部署<br>直接試打一下blog網址，可以看到畫面上有資料就代表大功告成了<br><img src="https://i.imgur.com/2sJbbNC.png" alt></p>
 <p>不過有個地方我覺得很奇怪，我以為要將全域網站代碼裡的code 貼入header中，但這邊只需要設定config即可。</p>
