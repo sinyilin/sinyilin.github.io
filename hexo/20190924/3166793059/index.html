@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="google-site-verification" content="Dn2N8snZGVR1MxahDxCsaCEuWl0oK-NFHVbB1Jmtdjs" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="roi's blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '複製',
+      copy_success: '複製成功',
+      copy_failure: '複製失敗'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="為什麼選擇利用GitHub + Hexo 作為寫blogger的呢？一直以來都在找工具來做技術的筆記，我有用過 Google blogger、Medium、Gitbook、HackMD來寫過。會使用的原因：">
+<meta name="keywords" content="git,hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用GitHub + Hexo 建立個人blogger">
+<meta property="og:url" content="https://sinyilin.github.io/hexo/20190924/3166793059/index.html">
+<meta property="og:site_name" content="roi&#39;s blog">
+<meta property="og:description" content="為什麼選擇利用GitHub + Hexo 作為寫blogger的呢？一直以來都在找工具來做技術的筆記，我有用過 Google blogger、Medium、Gitbook、HackMD來寫過。會使用的原因：">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://i.imgur.com/aVFpJHQ.png">
+<meta property="og:image" content="https://i.imgur.com/w3dqy01.png">
+<meta property="og:updated_time" content="2023-11-05T15:38:31.995Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用GitHub + Hexo 建立個人blogger">
+<meta name="twitter:description" content="為什麼選擇利用GitHub + Hexo 作為寫blogger的呢？一直以來都在找工具來做技術的筆記，我有用過 Google blogger、Medium、Gitbook、HackMD來寫過。會使用的原因：">
+<meta name="twitter:image" content="https://i.imgur.com/aVFpJHQ.png">
+  <link rel="canonical" href="https://sinyilin.github.io/hexo/20190924/3166793059/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>使用GitHub + Hexo 建立個人blogger | roi's blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-148989172-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-148989172-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1313960520162823"
+     crossorigin="anonymous"></script>
+  
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <a href="https://github.com/sinyilin" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">roi's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">roi's blog</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切換導航欄">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首頁</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>標籤</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分類</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>歸檔</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜尋</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜尋..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://sinyilin.github.io/hexo/20190924/3166793059/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="roi lin">
+      <meta itemprop="description" content="在此紀錄我所學到的東西.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="roi's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">使用GitHub + Hexo 建立個人blogger
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              
+                
+              
+
+              <time title="創建時間：2019-09-24 00:43:35" itemprop="dateCreated datePublished" datetime="2019-09-24T00:43:35+00:00">2019-09-24</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2023-11-05 15:38:31" itemprop="dateModified" datetime="2023-11-05T15:38:31+00:00">2023-11-05</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="閱讀次數">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="為什麼選擇利用GitHub-Hexo-作為寫blogger的呢？"><a href="#為什麼選擇利用GitHub-Hexo-作為寫blogger的呢？" class="headerlink" title="為什麼選擇利用GitHub + Hexo 作為寫blogger的呢？"></a>為什麼選擇利用GitHub + Hexo 作為寫blogger的呢？</h2><p>一直以來都在找工具來做技術的筆記，我有用過 Google blogger、Medium、Gitbook、HackMD來寫過。<br>會使用的原因：</p><a id="more"></a>
+<ol>
+<li>對我來說能讓程式碼跟IDE那樣，<del>粒粒分明</del>是很重要的。<br>我在使用上面那些工具的經驗上是程式碼都沒有Highlight的效果，<del>還是我用得太淺了</del>。<br>Meduim 可以透過額外工具(ex. gist)才能達到Highlight的效果</li>
+<li>後期用了Gitbook、HackMD所以比較熟悉markdown的語法</li>
+</ol>
+<ol start="3">
+<li>剛好看到六角學院的影片 <a href="https://www.youtube.com/watch?v=njlABvVRB68" target="_blank" rel="noopener">六角學院 - Github Pages - 免費網頁空間隨你開</a> ，就衝一發了</li>
+</ol>
+<p>先說自己架站寫技術文章的缺點就是要自己處理SEO問題</p>
+<h2 id="起手式-安裝-git-amp-node-js"><a href="#起手式-安裝-git-amp-node-js" class="headerlink" title="起手式     安裝 git &amp; node.js"></a>起手式     安裝 git &amp; node.js</h2><h3 id="安裝git"><a href="#安裝git" class="headerlink" title="安裝git"></a>安裝git</h3><p>因為我使用Mac來開發，所以我是使用之前裝的 Homebrew 軟體來安裝 Git</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 安裝 git</span><br><span class="line">$ brew install git</span><br></pre></td></tr></table></figure>
+
+<h3 id="安裝-node-js"><a href="#安裝-node-js" class="headerlink" title="安裝 node.js"></a>安裝 node.js</h3><p><a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">https://nodejs.org/en/download/</a></p>
+<h2 id="準備Github與新增Repository"><a href="#準備Github與新增Repository" class="headerlink" title="準備Github與新增Repository"></a>準備Github與新增Repository</h2><p>可以看這個來做 <a href="https://www.youtube.com/watch?v=njlABvVRB68" target="_blank" rel="noopener">六角學院 - Github Pages - 免費網頁空間隨你開</a></p>
+<ol>
+<li>註冊一個github帳號</li>
+<li>建立一個 Repository名稱為 <code>${yourAccount}.github.io</code>，以我的帳號來說就是<code>sinyilin.github.io</code></li>
+<li>進入該Repository 設定source 為<code>master branch</code><br><img src="https://i.imgur.com/aVFpJHQ.png" alt></li>
+</ol>
+<h2 id="各種安裝"><a href="#各種安裝" class="headerlink" title="各種安裝"></a>各種安裝</h2><h3 id="安裝-Hexo"><a href="#安裝-Hexo" class="headerlink" title="安裝 Hexo"></a>安裝 Hexo</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 安裝</span><br><span class="line">$ npm install hexo-cli -g</span><br><span class="line"></span><br><span class="line">#查看安裝版本</span><br><span class="line">$ hexo version</span><br></pre></td></tr></table></figure>
+
+<h3 id="安裝-Hexo-Git"><a href="#安裝-Hexo-Git" class="headerlink" title="安裝 Hexo Git"></a>安裝 Hexo Git</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化-Hexo"><a href="#初始化-Hexo" class="headerlink" title="初始化 Hexo"></a>初始化 Hexo</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init blog  #會建立一個blog資料夾</span><br><span class="line">$ cd blog   #進入該資料夾</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+
+<h2 id="如何與github連接"><a href="#如何與github連接" class="headerlink" title="如何與github連接"></a>如何與github連接</h2><h3 id="設定連結"><a href="#設定連結" class="headerlink" title="設定連結"></a>設定連結</h3><p>進入blog 資料夾，修改blog 資料夾下的_config.yml(全域的config)，如下：</p>
+<blockquote>
+<p>在全域的config </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: http://github.com/&#123;yourname&#125;/&#123;yourname&#125;.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure>
+
+<p>推上去後可以至 https://{yourname}.github.io/ 查看結果</p>
+<h2 id="設定樣式"><a href="#設定樣式" class="headerlink" title="設定樣式"></a>設定樣式</h2><h3 id="選擇主題"><a href="#選擇主題" class="headerlink" title="選擇主題"></a>選擇主題</h3><p>一開始會有一個預設的主題<br>如果看不順眼可以自行選擇主題<br><a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a></p>
+<p>我看蠻多人好像都會使用nexT (在我建置的當下已經到v7.4.0)<br><a href="https://github.com/theme-next/hexo-theme-next" target="_blank" rel="noopener">https://github.com/theme-next/hexo-theme-next</a></p>
+<p>透過指令將主題載下來</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+
+<p>我看到另一個感覺也不錯的<a href="https://www.haomwei.com/technology/maupassant-hexo.html" target="_blank" rel="noopener">主題</a></p>
+<h3 id="設定blog主題"><a href="#設定blog主題" class="headerlink" title="設定blog主題"></a>設定blog主題</h3><p>在blog資料夾中，有個檔案_config.yml，這個檔案是整個專案的設定檔<br>將裡面的theme 改成next，後重新部署</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#重新部署</span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure>
+
+<p>有時重新部署不會很快更新，這時可以直接在local run做測試</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># local run</span><br><span class="line">$ hexo s --debug</span><br></pre></td></tr></table></figure>
+
+<p>可以透過本機的 <a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 查看</p>
+<h4 id="next又分為四個小主題"><a href="#next又分為四個小主題" class="headerlink" title="next又分為四個小主題"></a>next又分為四個小主題</h4><p>💟 Muse | 🔯 Mist | ♓️ Pisces | ♊️ Gemini<br>可以由next 資料夾中的_config.yml設定<br>直接搜尋Pisces<br>不註解掉的就是要使用的主題</p>
+<blockquote>
+<p>在next的config </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># ---------------------------------------------------------------</span><br><span class="line"># Scheme Settings</span><br><span class="line"># ---------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"># Schemes</span><br><span class="line">scheme: Muse</span><br><span class="line">#scheme: Mist</span><br><span class="line">#scheme: Pisces</span><br><span class="line">#scheme: Gemini</span><br></pre></td></tr></table></figure>
+
+<h2 id="各種設定"><a href="#各種設定" class="headerlink" title="各種設定"></a>各種設定</h2><p>剛剛有提到有一個是全域的config<br>在主題next內有一個config，這是針對使用該主題的設定</p>
+<h3 id="設定整體的blog-基礎資訊"><a href="#設定整體的blog-基礎資訊" class="headerlink" title="設定整體的blog 基礎資訊"></a>設定整體的blog 基礎資訊</h3><blockquote>
+<p>在全域的config</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Site</span><br><span class="line">title: roi&apos;s blog</span><br><span class="line">subtitle:</span><br><span class="line">description: 在此紀錄我所學到的東西.</span><br><span class="line">keywords:</span><br><span class="line">author: Roi Lin</span><br><span class="line">language: en</span><br><span class="line">timezone:</span><br></pre></td></tr></table></figure>
+
+<h3 id="程式碼呈現方式"><a href="#程式碼呈現方式" class="headerlink" title="程式碼呈現方式"></a>程式碼呈現方式</h3><blockquote>
+<p>在next的config</p>
+</blockquote>
+<p>搜尋 <code>codeblock</code>，<br>總共有這幾種樣式可供選擇 normal | night | night eighties | night blue | night bright<br>我是使用<code>night eighties</code>的</p>
+<p>也可選擇要不要開啟複製按鈕</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">highlight_theme: night eighties</span><br><span class="line"># Add copy button on codeblock</span><br><span class="line">copy_button:</span><br><span class="line">  enable: true</span><br><span class="line">  # Show text copy result.</span><br><span class="line">  show_result: true</span><br><span class="line">  # Available values: default | flat | mac</span><br></pre></td></tr></table></figure>
+
+<h3 id="設定menu"><a href="#設定menu" class="headerlink" title="設定menu"></a>設定menu</h3><blockquote>
+<p>在next的config</p>
+</blockquote>
+<p>搜尋 <code>Menu Settings</code>，並修改</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: / || home</span><br><span class="line">  about: /about/ || user</span><br><span class="line">  tags: /tags/ || tags</span><br><span class="line">  categories: /categories/ || th</span><br><span class="line">  archives: /archives/ || archive</span><br><span class="line">  #schedule: /schedule/ || calendar</span><br><span class="line">  #sitemap: /sitemap.xml || sitemap</span><br><span class="line">  #commonweal: /404/ || heartbeat</span><br></pre></td></tr></table></figure>
+
+<h3 id="移除預設”嗯-目前共有-2-篇文章。-繼續努力。”"><a href="#移除預設”嗯-目前共有-2-篇文章。-繼續努力。”" class="headerlink" title="移除預設”嗯..! 目前共有 2 篇文章。 繼續努力。”"></a>移除預設”嗯..! 目前共有 2 篇文章。 繼續努力。”</h3><blockquote>
+<p>在next的config</p>
+</blockquote>
+<p>設定<code>cheers</code> 為<code>false</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Enable &quot;cheers&quot; for archive page.</span><br><span class="line">cheers: false</span><br></pre></td></tr></table></figure>
+
+<h3 id="取消底下的由-Hexo-強力驅動-v3-7-1-主題-—-NexT"><a href="#取消底下的由-Hexo-強力驅動-v3-7-1-主題-—-NexT" class="headerlink" title="取消底下的由 Hexo 強力驅動 v3.7.1 | 主題 — NexT"></a>取消底下的由 Hexo 強力驅動 v3.7.1 | 主題 — NexT</h3><blockquote>
+<p>在next的config</p>
+</blockquote>
+<p>搜尋<code>powered</code> 與<code>theme</code> 改為false</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">powered:</span><br><span class="line">  # Hexo link (Powered by Hexo).</span><br><span class="line">  enable: false</span><br><span class="line">  # Version info of Hexo after Hexo link (vX.X.X).</span><br><span class="line">  version: true</span><br><span class="line"></span><br><span class="line">theme:</span><br><span class="line">  # Theme &amp; scheme info link (Theme - NexT.scheme).</span><br><span class="line">  enable: false</span><br><span class="line">  # Version info of NexT after scheme info (vX.X.X).</span><br><span class="line">  version: true</span><br></pre></td></tr></table></figure>
+
+<h3 id="自動新增繼續閱讀"><a href="#自動新增繼續閱讀" class="headerlink" title="自動新增繼續閱讀"></a>自動新增繼續閱讀</h3><p>在首頁的部分會列出所有文章，此時文章都會完全地顯示，很佔版面。<br><img src="https://i.imgur.com/w3dqy01.png" alt><br>解決方法：</p>
+<ol>
+<li><p>可以在文章中直接添加，顯示閱讀全文按鈕</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一勞永逸作法：</p>
+</li>
+</ol>
+<p>則搜尋 auto_excerpt:，設成true<br>可以在length設定預設斷開的長度</p>
+<h3 id="設置樣式總結"><a href="#設置樣式總結" class="headerlink" title="設置樣式總結"></a>設置樣式總結</h3><p>這篇<a href="https://hsiangfeng.github.io/hexo/20190514/1899427194/" target="_blank" rel="noopener">NexT 實用的設定與功能</a>有列出一些blog的設定配置可以參考</p>
+<p>另外，這一篇<a href="https://blog.typeart.cc/HEXO%E6%90%AD%E9%85%8D%E4%B8%BB%E9%A1%8Cnext%E5%9F%BA%E7%A4%8E%E9%85%8D%E7%BD%AE%E6%95%99%E5%AD%B8/" target="_blank" rel="noopener">HEXO搭配主題next基礎配置教學</a>也有列出一些設定可以參考<br>這篇文中有提到講到一重點，就是不要太客製化，不然之後升版可能會有問題</p>
+<h2 id="新增tags、categories、archives-頁面"><a href="#新增tags、categories、archives-頁面" class="headerlink" title="新增tags、categories、archives 頁面"></a>新增tags、categories、archives 頁面</h2><p>terminal cd至blog根目錄</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page tags</span><br><span class="line">$ hexo new page categories</span><br><span class="line">$ hexo new page about</span><br></pre></td></tr></table></figure>
+
+<p>到source資料夾下新出現的這3個目錄，裡面的index.md各自加上type: “tags”(categories、archives同理)<br>主題會自動渲染成相關頁面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: about</span><br><span class="line">date: 2019-09-15 00:27:20</span><br><span class="line">type: about</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h2 id="發表文章"><a href="#發表文章" class="headerlink" title="發表文章"></a>發表文章</h2><h3 id="發新文章"><a href="#發新文章" class="headerlink" title="發新文章"></a>發新文章</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># postName是文章的名稱</span><br><span class="line">$ hexo new &#123;postName&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這時在 source / _post 資料夾中可以看到你剛剛新增的檔案<code>.md</code>檔<br>寫完內容後，重新部署就可以更新blog了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 重新部署</span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure>
+
+<h3 id="設定每篇文章基本資訊-文章分類-categories-與-tags"><a href="#設定每篇文章基本資訊-文章分類-categories-與-tags" class="headerlink" title="設定每篇文章基本資訊 :文章分類 categories 與 tags"></a>設定每篇文章基本資訊 :文章分類 categories 與 tags</h3><p>每一個<code>.md</code>檔 上面都可以設定基礎資訊，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Mac ＆ Win7 port 佔用處理方式</span><br><span class="line">date: 2019-09-14 21:03:58</span><br><span class="line">categories: </span><br><span class="line">- spring boot</span><br><span class="line">tags: </span><br><span class="line">- port</span><br><span class="line">- command line</span><br><span class="line">- spring boot</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h3 id="編輯已發表的文章"><a href="#編輯已發表的文章" class="headerlink" title="編輯已發表的文章"></a>編輯已發表的文章</h3><p>直接編輯<code>.md</code>檔案<br>再重新部署</p>
+<h3 id="刪除文章"><a href="#刪除文章" class="headerlink" title="刪除文章"></a>刪除文章</h3><p>直接刪除目錄中的<code>.md</code> 然後下指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean    # 清除快取檔案和已產生的靜態檔案。</span><br><span class="line">$ hexo d -g     # d = deploy, g = generate</span><br></pre></td></tr></table></figure>
+
+<h2 id="草稿"><a href="#草稿" class="headerlink" title="草稿"></a>草稿</h2><p>我目前都是在HackMD 上面寫完草稿，完成後就直接發，所以比較少用到這個功能<br>可以參考這篇 <a href="https://novnan.github.io/Hexo/hexo-draft/" target="_blank" rel="noopener">Hexo 文章保存为草稿</a></p>
+<h2 id="安裝第三方套件"><a href="#安裝第三方套件" class="headerlink" title="安裝第三方套件"></a>安裝第三方套件</h2><h3 id="設定每篇文章閱讀量"><a href="#設定每篇文章閱讀量" class="headerlink" title="設定每篇文章閱讀量"></a>設定每篇文章閱讀量</h3><p>如果想要觀察自己的blogger有多少人看的話可以設定<br>設定又分成兩種<br>一種是全站的 <a href="http://theme-next.iissnan.com/third-party-services.html#analytics-busuanzi" target="_blank" rel="noopener">不蒜子统计</a><br>一種是文章單獨分開計算的 <a href="https://leancloud.cn/" target="_blank" rel="noopener">LeanCloud</a></p>
+<h4 id="配置LeanCloud"><a href="#配置LeanCloud" class="headerlink" title="配置LeanCloud"></a>配置LeanCloud</h4><p>可參考這兩篇<br><a href="https://qinzhaokun.github.io/2017/06/10/%E4%BD%BF%E7%94%A8leancloud%E7%BB%99%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E9%98%85%E8%AF%BB%E6%AC%A1%E6%95%B0/" target="_blank" rel="noopener">使用leancloud给博客添加阅读次数</a></p>
+<p><a href="https://vonsdite.cn/posts/74d5335f.html" target="_blank" rel="noopener">Hexo Next leancloud文章阅读次数配置以及插件无效问题解决</a></p>
+<p>不過因為leanCloud 現在創建應用需要實名認證，實名認證需要掃支付寶，因此我放棄使用</p>
+<h2 id="留言板-Disqus"><a href="#留言板-Disqus" class="headerlink" title="留言板 Disqus"></a>留言板 Disqus</h2><p>可以參考此篇 <a href="https://ithelp.ithome.com.tw/articles/10208619" target="_blank" rel="noopener">部落格第三方服務介紹</a>進行Disqus的申請</p>
+<p>在設定的部分，打開Disqus</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Disqus</span><br><span class="line">disqus:</span><br><span class="line">  enable: true</span><br><span class="line">  shortname: roi-blog</span><br><span class="line">  count: false</span><br><span class="line">  lazyload: false</span><br><span class="line">  #post_meta_order: 0</span><br></pre></td></tr></table></figure>
+
+<p>設定完後你可能會發現，部分頁面不想給別人下評論ex. tag 跟category頁面<br>可以透過設定<code>.md</code>檔的基礎資訊來排除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Categories</span><br><span class="line">date: 2019-09-15 00:22:40</span><br><span class="line">type: categories</span><br><span class="line">comments: false</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h2 id="讓大家找得到你的blog-SEO"><a href="#讓大家找得到你的blog-SEO" class="headerlink" title="讓大家找得到你的blog SEO"></a>讓大家找得到你的blog SEO</h2><h3 id="對google-search的設定"><a href="#對google-search的設定" class="headerlink" title="對google search的設定"></a>對google search的設定</h3><p>我先依照這篇來做 <a href="https://hoxis.github.io/Hexo+Next%20SEO%E4%BC%98%E5%8C%96.html" target="_blank" rel="noopener">Hexo博客的优化方法，以Google搜索为例</a></p>
+<h3 id="網站整體的調整"><a href="#網站整體的調整" class="headerlink" title="網站整體的調整"></a>網站整體的調整</h3><p>這兩篇也有提到一些注意事項</p>
+<ol>
+<li><p><a href="https://hjptriplebee.github.io/hexo%E7%9A%84SEO%E6%96%B9%E6%B3%95.html/" target="_blank" rel="noopener">hexo的SEO方法</a></p>
+</li>
+<li><p><a href="http://blog.mobing.net/content/hexo/hexo-next-seo.html" target="_blank" rel="noopener">基于Hexo中Next主题的SEO优化指南</a></p>
+</li>
+</ol>
+<h3 id="當文章越來越多時-該怎麼管理"><a href="#當文章越來越多時-該怎麼管理" class="headerlink" title="當文章越來越多時 該怎麼管理"></a>當文章越來越多時 該怎麼管理</h3><p>本站還沒開始做，但未來可能會參考這篇來做<br><a href="https://usedfire.net/Notes/Hexo/make-hexo-post-category-by-folder/" target="_blank" rel="noopener">Hexo - 使文章依文章分類為資料夾名稱置放</a></p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a href="https://www.youtube.com/watch?v=njlABvVRB68" target="_blank" rel="noopener">六角學院 - Github Pages - 免費網頁空間隨你開</a></p>
+<p><a href="https://yaoandy107.github.io/hexo-tutorial/" target="_blank" rel="noopener">Hexo+GitHub，新手也可以快速建立部落格</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/git/" rel="tag"># git</a>
+            
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/vue/20190917/3105721319/" rel="next" title="Vue 生命週期 (Lifecycle)">
+                  <i class="fa fa-chevron-left"></i> Vue 生命週期 (Lifecycle)
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/javascript/20190928/3691519072/" rel="prev" title="Javascript 中 == vs. ===">
+                  Javascript 中 == vs. === <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#為什麼選擇利用GitHub-Hexo-作為寫blogger的呢？"><span class="nav-number">1.</span> <span class="nav-text">為什麼選擇利用GitHub + Hexo 作為寫blogger的呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#起手式-安裝-git-amp-node-js"><span class="nav-number">2.</span> <span class="nav-text">起手式     安裝 git &amp; node.js</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝git"><span class="nav-number">2.1.</span> <span class="nav-text">安裝git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-node-js"><span class="nav-number">2.2.</span> <span class="nav-text">安裝 node.js</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#準備Github與新增Repository"><span class="nav-number">3.</span> <span class="nav-text">準備Github與新增Repository</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各種安裝"><span class="nav-number">4.</span> <span class="nav-text">各種安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-Hexo"><span class="nav-number">4.1.</span> <span class="nav-text">安裝 Hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-Hexo-Git"><span class="nav-number">4.2.</span> <span class="nav-text">安裝 Hexo Git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化-Hexo"><span class="nav-number">4.3.</span> <span class="nav-text">初始化 Hexo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何與github連接"><span class="nav-number">5.</span> <span class="nav-text">如何與github連接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#設定連結"><span class="nav-number">5.1.</span> <span class="nav-text">設定連結</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署"><span class="nav-number">5.2.</span> <span class="nav-text">部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#設定樣式"><span class="nav-number">6.</span> <span class="nav-text">設定樣式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#選擇主題"><span class="nav-number">6.1.</span> <span class="nav-text">選擇主題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定blog主題"><span class="nav-number">6.2.</span> <span class="nav-text">設定blog主題</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#next又分為四個小主題"><span class="nav-number">6.2.1.</span> <span class="nav-text">next又分為四個小主題</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各種設定"><span class="nav-number">7.</span> <span class="nav-text">各種設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#設定整體的blog-基礎資訊"><span class="nav-number">7.1.</span> <span class="nav-text">設定整體的blog 基礎資訊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程式碼呈現方式"><span class="nav-number">7.2.</span> <span class="nav-text">程式碼呈現方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定menu"><span class="nav-number">7.3.</span> <span class="nav-text">設定menu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除預設”嗯-目前共有-2-篇文章。-繼續努力。”"><span class="nav-number">7.4.</span> <span class="nav-text">移除預設”嗯..! 目前共有 2 篇文章。 繼續努力。”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#取消底下的由-Hexo-強力驅動-v3-7-1-主題-—-NexT"><span class="nav-number">7.5.</span> <span class="nav-text">取消底下的由 Hexo 強力驅動 v3.7.1 | 主題 — NexT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自動新增繼續閱讀"><span class="nav-number">7.6.</span> <span class="nav-text">自動新增繼續閱讀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設置樣式總結"><span class="nav-number">7.7.</span> <span class="nav-text">設置樣式總結</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新增tags、categories、archives-頁面"><span class="nav-number">8.</span> <span class="nav-text">新增tags、categories、archives 頁面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#發表文章"><span class="nav-number">9.</span> <span class="nav-text">發表文章</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#發新文章"><span class="nav-number">9.1.</span> <span class="nav-text">發新文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#設定每篇文章基本資訊-文章分類-categories-與-tags"><span class="nav-number">9.2.</span> <span class="nav-text">設定每篇文章基本資訊 :文章分類 categories 與 tags</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#編輯已發表的文章"><span class="nav-number">9.3.</span> <span class="nav-text">編輯已發表的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#刪除文章"><span class="nav-number">9.4.</span> <span class="nav-text">刪除文章</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#草稿"><span class="nav-number">10.</span> <span class="nav-text">草稿</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝第三方套件"><span class="nav-number">11.</span> <span class="nav-text">安裝第三方套件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#設定每篇文章閱讀量"><span class="nav-number">11.1.</span> <span class="nav-text">設定每篇文章閱讀量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置LeanCloud"><span class="nav-number">11.1.1.</span> <span class="nav-text">配置LeanCloud</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#留言板-Disqus"><span class="nav-number">12.</span> <span class="nav-text">留言板 Disqus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#讓大家找得到你的blog-SEO"><span class="nav-number">13.</span> <span class="nav-text">讓大家找得到你的blog SEO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#對google-search的設定"><span class="nav-number">13.1.</span> <span class="nav-text">對google search的設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#網站整體的調整"><span class="nav-number">13.2.</span> <span class="nav-text">網站整體的調整</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#當文章越來越多時-該怎麼管理"><span class="nav-number">13.3.</span> <span class="nav-text">當文章越來越多時 該怎麼管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考資料"><span class="nav-number">14.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">roi lin</p>
+  <div class="site-description" itemprop="description">在此紀錄我所學到的東西.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分類</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">標籤</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/sinyilin" title="GitHub &rarr; https://github.com/sinyilin" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:fabien705cccc@gmail.com" title="E-Mail &rarr; mailto:fabien705cccc@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+
+
+	<!--google_adsense-->
+	
+ 	 <div class="links-of-blogroll-title">
+    	<i class="fa fa-google"></i> AdSense
+    	<ins class="adsbygoogle"
+       		style="display:block"
+        	data-ad-client="ca-pub-1313960520162823"
+        	data-ad-slot="0"
+        	data-ad-format="auto"
+        	data-full-width-responsive="true"></ins>
+    	<script>
+      		(adsbygoogle = window.adsbygoogle || []).push({});
+    	</script>
+  	</div>
+	
+	<!--/google_adsense-->
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roi lin</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="訪客總數">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="總瀏覽次數">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function disqus_config() {
+    this.page.url = "https://sinyilin.github.io/hexo/20190924/3166793059/";
+    this.page.identifier = "hexo/20190924/3166793059/";
+    this.page.title = '使用GitHub + Hexo 建立個人blogger';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://roi-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
