@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="google-site-verification" content="Dn2N8snZGVR1MxahDxCsaCEuWl0oK-NFHVbB1Jmtdjs" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="roi's blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '複製',
+      copy_success: '複製成功',
+      copy_failure: '複製失敗'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="本篇文章將說明如何透過 Jasypt 做加密，以及如何應用在 Spring boot 程式開發上。">
+<meta name="keywords" content="spring boot, jasypt ,java, 加密">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring boot 開發 - 使用 Jasypt 進行加密">
+<meta property="og:url" content="https://sinyilin.github.io/spring-boot/20240823/2374258038/index.html">
+<meta property="og:site_name" content="roi&#39;s blog">
+<meta property="og:description" content="本篇文章將說明如何透過 Jasypt 做加密，以及如何應用在 Spring boot 程式開發上。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://sinyilin.github.io/images/spring-boot-jasypt/1.png">
+<meta property="og:updated_time" content="2024-08-23T09:30:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring boot 開發 - 使用 Jasypt 進行加密">
+<meta name="twitter:description" content="本篇文章將說明如何透過 Jasypt 做加密，以及如何應用在 Spring boot 程式開發上。">
+<meta name="twitter:image" content="https://sinyilin.github.io/images/spring-boot-jasypt/1.png">
+  <link rel="canonical" href="https://sinyilin.github.io/spring-boot/20240823/2374258038/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Spring boot 開發 - 使用 Jasypt 進行加密 | roi's blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-148989172-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-148989172-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1313960520162823"
+     crossorigin="anonymous"></script>
+  
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <a href="https://github.com/sinyilin" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">roi's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">roi's blog</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切換導航欄">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首頁</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>標籤</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分類</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>歸檔</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜尋</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜尋..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://sinyilin.github.io/spring-boot/20240823/2374258038/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="roi lin">
+      <meta itemprop="description" content="在此紀錄我所學到的東西.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="roi's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">Spring boot 開發 - 使用 Jasypt 進行加密
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              
+                
+              
+
+              <time title="創建時間：2024-08-23 09:30:00" itemprop="dateCreated datePublished" datetime="2024-08-23T09:30:00+00:00">2024-08-23</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/spring-boot/" itemprop="url" rel="index"><span itemprop="name">spring boot</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="閱讀次數">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+            <div class="post-description">本篇文章將說明如何透過 Jasypt 做加密，以及如何應用在 Spring boot 程式開發上。</div>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Jasypt-介紹"><a href="#Jasypt-介紹" class="headerlink" title="Jasypt 介紹"></a>Jasypt 介紹</h2><p>系統中有一些重要的資訊是不能明碼的展示在程式碼中，比如密碼、API 密鑰等，以免被有心人士拿去利用，此時就會需要一個加密的工具。<br>Jasypt 是一個 Java 的加密Library，它提供簡單易用的API與配置，讓開發者可以在不需要深入了解加密演算法的情況下，也能輕鬆的在程式中實作加密與解密功能。</p><a id="more"></a>
+<h2 id="如何使用-jasypt-加密"><a href="#如何使用-jasypt-加密" class="headerlink" title="如何使用 jasypt 加密"></a>如何使用 jasypt 加密</h2><p>在使用 Jasypt 進行加密時，大致流程如下：</p>
+<ul>
+<li>加密密碼：首先，通過 Jasypt 提供的工具或命令行界面，將需要加密的密碼轉換為加密字串。這個加密字串可以安全地存儲在配置文件中，而不會洩露敏感信息。</li>
+<li>引入依賴：在 應用程式中，引入 Jasypt 的 dependency，確保應用能夠使用 Jasypt 的加密和解密功能。</li>
+<li>配置加密字串：將生成的加密字串放入應用的配置文件中，例如 application.properties 或 application.yml。應用在運行時，會自動使用 Jasypt 進行解密，並將解密後的值提供給程式使用。</li>
+</ul>
+<h3 id="Step1-透過-jasypt-加密，取得加密後字串"><a href="#Step1-透過-jasypt-加密，取得加密後字串" class="headerlink" title="Step1. 透過 jasypt 加密，取得加密後字串"></a>Step1. 透過 jasypt 加密，取得加密後字串</h3><p>取得 jasypt 加密後的字串有很多種方式，以下說明三種方式</p>
+<h3 id="寫個小程式加密"><a href="#寫個小程式加密" class="headerlink" title="寫個小程式加密"></a>寫個小程式加密</h3><p>以下範例是寫在Junit中執行，也可參考部分的sample coder寫在主程式中，執行後會產生出一組加密後字串。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.testJasypt.web;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.testJasypt.web.service.BaseService;</span><br><span class="line"><span class="keyword">import</span> org.jasypt.encryption.pbe.StandardPBEStringEncryptor;</span><br><span class="line"><span class="keyword">import</span> org.jasypt.encryption.pbe.config.EnvironmentPBEConfig;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.test.context.SpringBootTest;</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.ActiveProfiles;</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringRunner;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="meta">@ActiveProfiles</span>(profiles = <span class="string">"dev"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebApplicationTests</span> <span class="keyword">extends</span> <span class="title">BaseService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ALGORITHM = <span class="string">"PBEWithMD5AndDES"</span>;  </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String ENCRYPT_KEY = <span class="string">"EbfYkitulv73I2p0mXI50JMXoaxZTKJ7"</span>;</span><br><span class="line">    	</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String text = <span class="string">"123456"</span>;</span><br><span class="line">		EncryptAndDecrypt(text);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">EncryptAndDecrypt</span><span class="params">(String plainText)</span> </span>&#123;</span><br><span class="line">          StandardPBEStringEncryptor standardPBEStringEncryptor = <span class="keyword">new</span> StandardPBEStringEncryptor();</span><br><span class="line">          EnvironmentPBEConfig config = <span class="keyword">new</span> EnvironmentPBEConfig();</span><br><span class="line">       </span><br><span class="line">          config.setAlgorithm(ALGORITHM);          <span class="comment">// 加密的算法，這個是default的演算法，可以指定別種加密演算法</span></span><br><span class="line">          config.setPassword(ENCRYPT_KEY);         <span class="comment">// 加密的密鑰</span></span><br><span class="line">          standardPBEStringEncryptor.setConfig(config);</span><br><span class="line">        </span><br><span class="line">          System.out.println(<span class="string">"0. 加密前的字串  -------------------------"</span>);</span><br><span class="line">          System.out.println(plainText);</span><br><span class="line">        </span><br><span class="line">          System.out.println(<span class="string">"1. 加密後的字串  Encryptc-------------------------"</span>);</span><br><span class="line">          String encryptedText = standardPBEStringEncryptor.encrypt(plainText);</span><br><span class="line">          System.out.println(encryptedText);</span><br><span class="line">        </span><br><span class="line">      	  System.out.println(<span class="string">"2.  解密後的字串 Decrypt-------------------------"</span>);</span><br><span class="line">          String afterDecrypt = standardPBEStringEncryptor.decrypt(encryptedText);</span><br><span class="line">          System.out.println(afterDecrypt);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="透過-Command-Line-執行-jar-加密"><a href="#透過-Command-Line-執行-jar-加密" class="headerlink" title="透過 Command Line 執行 jar 加密"></a>透過 Command Line 執行 jar 加密</h3><ul>
+<li><p>到 <code>.m2</code> 資料夾下找到jasypt library，執行以下指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#  java -cp jasypt-1.9.3.jar org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI input=&quot;&#123;原始密碼&#125;&quot; password=&#123;加密的密鑰&#125; algorithm=&#123;加密的演算法&#125;</span><br><span class="line"></span><br><span class="line">java -cp jasypt-1.9.3.jar org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI input=&quot;root&quot; password=spring algorithm=PBEWithMD5AndDES</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>執行結果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">----ENVIRONMENT-----------------</span><br><span class="line"></span><br><span class="line">Runtime: Oracle Corporation OpenJDK 64-Bit Server VM 15.0.1+9-18</span><br><span class="line"></span><br><span class="line">----ARGUMENTS-------------------</span><br><span class="line"></span><br><span class="line">input: 123456</span><br><span class="line">password: EbfYkitulv73I2p0mXI50JMXoaxZTKJ7</span><br><span class="line">algorithm: PBEWithMD5AndDES</span><br><span class="line"></span><br><span class="line">----OUTPUT----------------------</span><br><span class="line"></span><br><span class="line">YidAq+TOHJ3lCI+SqFhOJA==</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>執行結果截圖<br><img src="/images/spring-boot-jasypt/1.png" alt></p>
+</li>
+</ul>
+<h3 id="使用線上小工具加密"><a href="#使用線上小工具加密" class="headerlink" title="使用線上小工具加密"></a>使用線上小工具加密</h3><p>沒有執行環境，可以直接使用線上網站來加密，也可以達到一樣的效果，不過這個網站目前只能使用default的 <code>PBEWithMD5AndDES</code> 演算法 。<br><a href="https://www.devglan.com/online-tools/jasypt-online-encryption-decryption" target="_blank" rel="noopener">https://www.devglan.com/online-tools/jasypt-online-encryption-decryption</a></p>
+<h2 id="Step2-引入依賴與配置加密字串，將加密字串後應用在-Spring-Boot"><a href="#Step2-引入依賴與配置加密字串，將加密字串後應用在-Spring-Boot" class="headerlink" title="Step2. 引入依賴與配置加密字串，將加密字串後應用在 Spring Boot"></a>Step2. 引入依賴與配置加密字串，將加密字串後應用在 Spring Boot</h2><p>如果要應用在資料庫密碼加密上的話，在取得加密字串後，需要做以下動作：</p>
+<h3 id="引入Maven-dependency，在-POM-xml-中新增-dependency"><a href="#引入Maven-dependency，在-POM-xml-中新增-dependency" class="headerlink" title="引入Maven dependency，在 POM.xml 中新增 dependency"></a>引入Maven dependency，在 <code>POM.xml</code> 中新增 dependency</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;com.github.ulisesbocchio&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;jasypt-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.9.3&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="properties-檔案設定"><a href="#properties-檔案設定" class="headerlink" title="properties 檔案設定"></a><code>properties</code> 檔案設定</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 調整資料庫設定，加上ENC()，方法內填上加密後的字串</span><br><span class="line">spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver</span><br><span class="line">spring.datasource.url=jdbc:mysql://localhost:3306/mytest?serverTimezone=Asia/Taipei&amp;characterEncoding=utf-8</span><br><span class="line">spring.datasource.username=root</span><br><span class="line">spring.datasource.password=ENC(I4gM5/FpHfeA7fW1fioYgBRjZRG5nHl1WEJhDbgm28YFgpndkb1HQR+846TrAFJt)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 配置啟動參數，服務啟動時，需將加密後的字串透過這把Key解密</span><br><span class="line">jasypt.encryptor.password=EbfYkitulv73I2p0mXI50JMXoaxZTKJ7</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/spring-boot/" rel="tag"># spring boot</a>
+            
+              <a href="/tags/jasypt/" rel="tag"># jasypt</a>
+            
+              <a href="/tags/java/" rel="tag"># java</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/Postman/20240708/1059746845/" rel="next" title="使用 Postman 讀檔進行測試或建立測試資料">
+                  <i class="fa fa-chevron-left"></i> 使用 Postman 讀檔進行測試或建立測試資料
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/Git/20240908/3475006884/" rel="prev" title="使用 Github Actions 自動化部署 Hexo 到 Github Pages 個人部落格">
+                  使用 Github Actions 自動化部署 Hexo 到 Github Pages 個人部落格 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jasypt-介紹"><span class="nav-number">1.</span> <span class="nav-text">Jasypt 介紹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用-jasypt-加密"><span class="nav-number">2.</span> <span class="nav-text">如何使用 jasypt 加密</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Step1-透過-jasypt-加密，取得加密後字串"><span class="nav-number">2.1.</span> <span class="nav-text">Step1. 透過 jasypt 加密，取得加密後字串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#寫個小程式加密"><span class="nav-number">2.2.</span> <span class="nav-text">寫個小程式加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#透過-Command-Line-執行-jar-加密"><span class="nav-number">2.3.</span> <span class="nav-text">透過 Command Line 執行 jar 加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用線上小工具加密"><span class="nav-number">2.4.</span> <span class="nav-text">使用線上小工具加密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step2-引入依賴與配置加密字串，將加密字串後應用在-Spring-Boot"><span class="nav-number">3.</span> <span class="nav-text">Step2. 引入依賴與配置加密字串，將加密字串後應用在 Spring Boot</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入Maven-dependency，在-POM-xml-中新增-dependency"><span class="nav-number">3.1.</span> <span class="nav-text">引入Maven dependency，在 POM.xml 中新增 dependency</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#properties-檔案設定"><span class="nav-number">3.2.</span> <span class="nav-text">properties 檔案設定</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">roi lin</p>
+  <div class="site-description" itemprop="description">在此紀錄我所學到的東西.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分類</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">標籤</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/sinyilin" title="GitHub &rarr; https://github.com/sinyilin" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:fabien705cccc@gmail.com" title="E-Mail &rarr; mailto:fabien705cccc@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+
+
+	<!--google_adsense-->
+	
+ 	 <div class="links-of-blogroll-title">
+    	<i class="fa fa-google"></i> AdSense
+    	<ins class="adsbygoogle"
+       		style="display:block"
+        	data-ad-client="ca-pub-1313960520162823"
+        	data-ad-slot="0"
+        	data-ad-format="auto"
+        	data-full-width-responsive="true"></ins>
+    	<script>
+      		(adsbygoogle = window.adsbygoogle || []).push({});
+    	</script>
+  	</div>
+	
+	<!--/google_adsense-->
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roi lin</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="訪客總數">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="總瀏覽次數">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function disqus_config() {
+    this.page.url = "https://sinyilin.github.io/spring-boot/20240823/2374258038/";
+    this.page.identifier = "spring-boot/20240823/2374258038/";
+    this.page.title = 'Spring boot 開發 - 使用 Jasypt 進行加密';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://roi-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>

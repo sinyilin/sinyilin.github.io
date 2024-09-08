@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="google-site-verification" content="Dn2N8snZGVR1MxahDxCsaCEuWl0oK-NFHVbB1Jmtdjs" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="roi's blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '複製',
+      copy_success: '複製成功',
+      copy_failure: '複製失敗'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前一陣子開始學vue，會在這邊紀錄學vue的一些學習筆記。學了一段時間後，覺得可以做成筆記，所以筆記的順序可能會有點奇怪。">
+<meta name="keywords" content="javascript,vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="踏入Vue的世界">
+<meta property="og:url" content="https://sinyilin.github.io/vue/20191011/1042885337/index.html">
+<meta property="og:site_name" content="roi&#39;s blog">
+<meta property="og:description" content="前一陣子開始學vue，會在這邊紀錄學vue的一些學習筆記。學了一段時間後，覺得可以做成筆記，所以筆記的順序可能會有點奇怪。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://i.imgur.com/yjQtvGa.png">
+<meta property="og:image" content="https://i.imgur.com/B8xMNax.png">
+<meta property="og:updated_time" content="2019-10-11T22:08:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="踏入Vue的世界">
+<meta name="twitter:description" content="前一陣子開始學vue，會在這邊紀錄學vue的一些學習筆記。學了一段時間後，覺得可以做成筆記，所以筆記的順序可能會有點奇怪。">
+<meta name="twitter:image" content="https://i.imgur.com/yjQtvGa.png">
+  <link rel="canonical" href="https://sinyilin.github.io/vue/20191011/1042885337/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>踏入Vue的世界 | roi's blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-148989172-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-148989172-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1313960520162823"
+     crossorigin="anonymous"></script>
+  
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <a href="https://github.com/sinyilin" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">roi's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">roi's blog</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切換導航欄">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首頁</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>標籤</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分類</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>歸檔</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜尋</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜尋..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://sinyilin.github.io/vue/20191011/1042885337/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="roi lin">
+      <meta itemprop="description" content="在此紀錄我所學到的東西.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="roi's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">踏入Vue的世界
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              
+                
+              
+
+              <time title="創建時間：2019-10-11 22:08:41" itemprop="dateCreated datePublished" datetime="2019-10-11T22:08:41+00:00">2019-10-11</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">vue</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="閱讀次數">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>前一陣子開始學vue，會在這邊紀錄學vue的一些學習筆記。<br>學了一段時間後，覺得可以做成筆記，所以筆記的順序可能會有點奇怪。</p><a id="more"></a>
+<h2 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h2><ul>
+<li>讀音類似「view」</li>
+<li>一套用於建構用戶介面簡單輕量的JS漸進式框架，也能與其他前端框架與函式庫並存共⽤</li>
+<li>採用MVVM的概念</li>
+<li>版本目前學2.6.10，Vue 3.0 處於RFC階段<ul>
+<li>目前是說關於vue3.0 的部分有向下相容，所以只要學新的部分</li>
+</ul>
+</li>
+<li>入門前要會一點HTML、CSS 和 JavaScript</li>
+</ul>
+<h2 id="何謂漸進式框架"><a href="#何謂漸進式框架" class="headerlink" title="何謂漸進式框架?"></a>何謂漸進式框架?</h2><p>一張圖說明這個概念<br><img src="https://i.imgur.com/yjQtvGa.png" alt><br>Vue.js的核心只關注於view layout的呈現，是提供最小化且必要的功能給予使用者。<br>其餘相關的功能項目都可用其他函式庫或是工具去協助處理。</p>
+<p>舉例來說：<br>當你不想透過server-side 進行url的轉換的需求時，可以採用vue-router實現前端路由<br>當有跨component溝通的需求時，可以採用vuex進行狀態管理等等<br>也就是說根據你實際需要去堆疊出各項應用。</p>
+<p>也可以參考這篇說明<a href="https://medium.com/@gotraveltoworld/vue-js-%E4%BD%95%E8%AC%82%E6%BC%B8%E9%80%B2%E5%BC%8F%E6%A1%86%E6%9E%B6-7d0281a7efa9" target="_blank" rel="noopener">Vue.js，何謂漸進式框架？</a></p>
+<h2 id="MVVM-Model-View-ViewModel-是什麼？"><a href="#MVVM-Model-View-ViewModel-是什麼？" class="headerlink" title="MVVM(Model-View-ViewModel)是什麼？"></a>MVVM(Model-View-ViewModel)是什麼？</h2><p><img src="https://i.imgur.com/B8xMNax.png" alt></p>
+<p>M(model):資料的部分<br>V(view):畫面的呈現<br>VM(view-model):雙向數據綁定，會監聽model與view兩邊。</p>
+<p>當使用者在操作畫面(View)時，viewModel會監聽狀態，若有改變則會同步修改資料(Model);<br>反之，當資料(Model)有改變時，viewModel會將改變傳回給畫面(View)。因此，不需要手動操作<a href="https://ithelp.ithome.com.tw/articles/10202689" target="_blank" rel="noopener">DOM元素</a>也能更新資料。</p>
+<p>相比之下，如果是使用JQuery的話是直接操作DOM元素，vue 是透過資料的狀態(Model)去變動畫面(View)。</p>
+<h2 id="從jQuery-到-vue"><a href="#從jQuery-到-vue" class="headerlink" title="從jQuery 到 vue"></a>從jQuery 到 vue</h2><p>講這個之前先來一個小範例，兩個範例都是要取得輸入的值並顯示在網頁上<br><a href="https://codepen.io/sinyilin/pen/KKKdLpO" target="_blank" rel="noopener">使用jQuery的作法</a> vs.<a href="https://codepen.io/sinyilin/pen/MWWadyw" target="_blank" rel="noopener">使用vue的作法</a></p>
+<blockquote>
+<p>jQuery</p>
+</blockquote>
+<p>採用指令式渲染，以操作 DOM Node 為基礎的開發模式<br>開發方式直覺，透過 Selector 取得 DOM 就開始操作<br>但程式架構擴⼤複雜後，程式碼混雜不易維護</p>
+<blockquote>
+<p>Vue</p>
+</blockquote>
+<p>以操作物件模型為基礎的開發模式。<br>行為關注點放在資料 ( Model ) 與狀態<br>改變的是資料，而不是直接操作 DOM</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>前陣子也去聽了一場演講<a href="https://slides.com/mikecheng1208/deck?fbclid=IwAR3TE9hfZRGAk-vXcK6XsExbWS0C1wqiYK9v2JkNwPHYcWvaUA_nMpveRt0#/0/4" target="_blank" rel="noopener">不vue白不vue ─ 當天就上手的Vue新⼿教學</a>，這邊也提供簡報給大家參考</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p>五倍紅寶石-Vue.js 與 Vuex 前端開發實戰課程</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+            
+              <a href="/tags/vue/" rel="tag"># vue</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/hexo/20190930/1153503290/" rel="next" title="為你的Blog做GA流量分析">
+                  <i class="fa fa-chevron-left"></i> 為你的Blog做GA流量分析
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/vue/20191011/1714756113/" rel="prev" title="vue的開發環境建置">
+                  vue的開發環境建置 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#簡介"><span class="nav-number">1.</span> <span class="nav-text">簡介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#何謂漸進式框架"><span class="nav-number">2.</span> <span class="nav-text">何謂漸進式框架?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVVM-Model-View-ViewModel-是什麼？"><span class="nav-number">3.</span> <span class="nav-text">MVVM(Model-View-ViewModel)是什麼？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#從jQuery-到-vue"><span class="nav-number">4.</span> <span class="nav-text">從jQuery 到 vue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考資料"><span class="nav-number">6.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">roi lin</p>
+  <div class="site-description" itemprop="description">在此紀錄我所學到的東西.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分類</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">標籤</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/sinyilin" title="GitHub &rarr; https://github.com/sinyilin" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:fabien705cccc@gmail.com" title="E-Mail &rarr; mailto:fabien705cccc@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+
+
+	<!--google_adsense-->
+	
+ 	 <div class="links-of-blogroll-title">
+    	<i class="fa fa-google"></i> AdSense
+    	<ins class="adsbygoogle"
+       		style="display:block"
+        	data-ad-client="ca-pub-1313960520162823"
+        	data-ad-slot="0"
+        	data-ad-format="auto"
+        	data-full-width-responsive="true"></ins>
+    	<script>
+      		(adsbygoogle = window.adsbygoogle || []).push({});
+    	</script>
+  	</div>
+	
+	<!--/google_adsense-->
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roi lin</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="訪客總數">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="總瀏覽次數">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function disqus_config() {
+    this.page.url = "https://sinyilin.github.io/vue/20191011/1042885337/";
+    this.page.identifier = "vue/20191011/1042885337/";
+    this.page.title = '踏入Vue的世界';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://roi-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>

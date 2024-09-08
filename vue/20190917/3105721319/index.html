@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+<meta name="google-site-verification" content="Dn2N8snZGVR1MxahDxCsaCEuWl0oK-NFHVbB1Jmtdjs" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="alternate" href="/atom.xml" title="roi's blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '複製',
+      copy_success: '複製成功',
+      copy_failure: '複製失敗'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="最近開始接觸Vue，趁著記憶還很新的時候記錄一下我所記得的內容。Vue的生命週期就是Vue的實體(Instance)到從建立-&amp;gt;更新-&amp;gt;摧毀的這段過程。官方在這段過程中提供一些方法(Hook function)給開發者進行使用，如下圖中的紅色方框。">
+<meta name="keywords" content="javascript,vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue 生命週期 (Lifecycle)">
+<meta property="og:url" content="https://sinyilin.github.io/vue/20190917/3105721319/index.html">
+<meta property="og:site_name" content="roi&#39;s blog">
+<meta property="og:description" content="最近開始接觸Vue，趁著記憶還很新的時候記錄一下我所記得的內容。Vue的生命週期就是Vue的實體(Instance)到從建立-&amp;gt;更新-&amp;gt;摧毀的這段過程。官方在這段過程中提供一些方法(Hook function)給開發者進行使用，如下圖中的紅色方框。">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://i.imgur.com/NGrlgPg.png">
+<meta property="og:image" content="https://i.imgur.com/9p9T8DL.png">
+<meta property="og:updated_time" content="2019-09-17T17:27:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue 生命週期 (Lifecycle)">
+<meta name="twitter:description" content="最近開始接觸Vue，趁著記憶還很新的時候記錄一下我所記得的內容。Vue的生命週期就是Vue的實體(Instance)到從建立-&amp;gt;更新-&amp;gt;摧毀的這段過程。官方在這段過程中提供一些方法(Hook function)給開發者進行使用，如下圖中的紅色方框。">
+<meta name="twitter:image" content="https://i.imgur.com/NGrlgPg.png">
+  <link rel="canonical" href="https://sinyilin.github.io/vue/20190917/3105721319/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Vue 生命週期 (Lifecycle) | roi's blog</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-148989172-1"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-148989172-1');
+    }
+  </script>
+
+
+
+
+
+
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1313960520162823"
+     crossorigin="anonymous"></script>
+  
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-TW">
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <a href="https://github.com/sinyilin" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">roi's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">roi's blog</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切換導航欄">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首頁</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>標籤</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分類</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>歸檔</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜尋</a>
+      </li>
+    
+  </ul>
+
+    
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜尋..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://sinyilin.github.io/vue/20190917/3105721319/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="roi lin">
+      <meta itemprop="description" content="在此紀錄我所學到的東西.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="roi's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">Vue 生命週期 (Lifecycle)
+
+          
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              
+                
+              
+
+              <time title="創建時間：2019-09-17 17:27:42" itemprop="dateCreated datePublished" datetime="2019-09-17T17:27:42+00:00">2019-09-17</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">vue</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            <span class="post-meta-item" title="閱讀次數">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">閱讀次數：</span>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近開始接觸Vue，趁著記憶還很新的時候記錄一下我所記得的內容。<br>Vue的生命週期就是Vue的實體(Instance)到從建立-&gt;更新-&gt;摧毀的這段過程。<br>官方在這段過程中提供一些方法(Hook function)給開發者進行使用，如下圖中的紅色方框。</p><a id="more"></a>
+<p><img src="https://i.imgur.com/NGrlgPg.png" alt></p>
+<p>當我們生命週期到某一個點的時候就會觸發這個Hook function，因此可以在特定的時間點對Vue實體進行操作。</p>
+<p>以下是我對Vue生命週期的解釋:</p>
+<h2 id="Vue-生命週期"><a href="#Vue-生命週期" class="headerlink" title="Vue 生命週期"></a>Vue 生命週期</h2><p>以下我利用紅色將 Highlight Hook function 標示出來: </p>
+<h3 id="1-new-Vue"><a href="#1-new-Vue" class="headerlink" title="1.new Vue() :"></a>1.new Vue() :</h3><p>建立Vue的實體</p>
+<h3 id="2-beforeCreate"><a href="#2-beforeCreate" class="headerlink" title="2.beforeCreate :"></a><font style="color:red">2.beforeCreate :</font></h3><p>尚未初始化前，無法取得vue 實體裡的 <code>vm.$data</code>，也不會生成DOM元素。</p>
+<h3 id="3-Observe-Data-amp-Init-Events："><a href="#3-Observe-Data-amp-Init-Events：" class="headerlink" title="3.Observe Data &amp; Init Events："></a>3.Observe Data &amp; Init Events：</h3><p>開始初始化。</p>
+<h3 id="4-Created："><a href="#4-Created：" class="headerlink" title=" 4.Created："></a><font style="color:red"> 4.Created：</font></h3><p>實體已經建立，屬性已綁定，因此在此才能拿到 vue 實體裡的<code>vm.$ data</code>，不過DOM元素還沒有生成。</p>
+<h3 id="5-判斷實體裡面的-el是否有被掛載"><a href="#5-判斷實體裡面的-el是否有被掛載" class="headerlink" title="5.判斷實體裡面的$.el是否有被掛載"></a>5.判斷實體裡面的<code>$.el</code>是否有被掛載</h3><p>如果沒有的話後續就都不會執行直到vm.$mount()被呼叫；有的話會繼續往下執行。</p>
+<h3 id="6-判斷實體內是否有template-屬性"><a href="#6-判斷實體內是否有template-屬性" class="headerlink" title="6.判斷實體內是否有template 屬性"></a>6.判斷實體內是否有template 屬性</h3><p>有的話就使用template 的內容當作樣板之後用來render 畫面；沒有的話就使用綁定el的html當作樣板之後用來render 畫面。</p>
+<h3 id="7-beforeMount："><a href="#7-beforeMount：" class="headerlink" title=" 7.beforeMount："></a><font style="color:red"> 7.beforeMount：</font></h3><p>DOM元素渲染到畫面上以前調用。<br>模板 (template) 編譯並掛載至 HTML 之前，此時template中被綁定的元素還尚未轉換為要輸出的HTML，例如還是。</p>
+<h3 id="8-模板-template-編譯與掛載"><a href="#8-模板-template-編譯與掛載" class="headerlink" title="8.模板(template)編譯與掛載"></a>8.模板(template)編譯與掛載</h3><h3 id="9-mounted："><a href="#9-mounted：" class="headerlink" title="  9.mounted："></a><font style="color:red">  9.mounted：</font></h3><p>DOM元素渲染到畫面上後後調用。<br>模板 (template) 編譯並掛載至 HTML 之後，此時template中被綁定的元素已轉換為要輸出的HTML，例如0。此時就好像JQuery中的ready()。</p>
+<h3 id="10-beforeUpdate："><a href="#10-beforeUpdate：" class="headerlink" title="10.beforeUpdate："></a><font style="color:red">10.beforeUpdate：</font></h3><p>更新前，在這邊可以取得更新前與後的資料。</p>
+<h3 id="11-Create-el-…-and-replace-el-："><a href="#11-Create-el-…-and-replace-el-：" class="headerlink" title="11.Create $.el ….and replace el ："></a>11.Create $.el ….and replace el ：</h3><p>render 畫面</p>
+<h3 id="12-updated："><a href="#12-updated：" class="headerlink" title=" 12.updated："></a><font style="color:red"> 12.updated：</font></h3><p>更新後。</p>
+<h3 id="13-activated："><a href="#13-activated：" class="headerlink" title="13. activated："></a><font style="color:red">13. activated：</font></h3><p>有使用<code>&lt;keep-alive&gt;&lt;/keep-alive&gt;</code>才會用到。</p>
+<h3 id="14-deactivated："><a href="#14-deactivated：" class="headerlink" title="14.deactivated："></a><font style="color:red">14.deactivated：</font></h3><p>有使用<code>&lt;keep-alive&gt;&lt;/keep-alive&gt;</code>才會用到。</p>
+<h3 id="15-beforeDestroy："><a href="#15-beforeDestroy：" class="headerlink" title="15. beforeDestroy："></a><font style="color:red">15. beforeDestroy：</font></h3><p>實體被摧毀前。</p>
+<h3 id="16-destroyed："><a href="#16-destroyed：" class="headerlink" title="16.destroyed："></a><font style="color:red">16.destroyed：</font></h3><p>實體摧毀，監聽事件、子實體會被銷毀。</p>
+<h2 id="範例程式"><a href="#範例程式" class="headerlink" title="範例程式"></a>範例程式</h2><p>這邊有一段 沒有使用<code>&lt;keep-alive&gt;&lt;/keep-alive&gt;</code>的 <a href="https://codepen.io/sinyilin/pen/xxKqYGO" target="_blank" rel="noopener">code</a> 可以幫助理解，可以透過console來觀看生命週期。<br>一開始console如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&quot;beforeCreate - this.count: &quot; undefined</span><br><span class="line">&quot;beforeCreate - this.$el: &quot; undefined</span><br><span class="line">&quot;created - this.count: &quot; 0</span><br><span class="line">&quot;created - this.$el: &quot; undefined</span><br><span class="line">&quot;beforeMount - this.$el: &quot; &quot;&lt;div id=&apos;app&apos;&gt;</span><br><span class="line">&lt;h1&gt; &#123;&#123; count &#125;&#125;&lt;/h1&gt;</span><br><span class="line">&lt;button class=&apos;btn btn-primary&apos; @click=&apos;add&apos;&gt;Count&lt;/button&gt;</span><br><span class="line">&lt;/div&gt;&quot;</span><br><span class="line">&quot;mounted - this.$el: &quot; &quot;&lt;div id=&apos;app&apos;&gt;&lt;h1&gt; 0&lt;/h1&gt; &lt;button class=&apos;btn btn-primary&apos;&gt;Count&lt;/button&gt;&lt;/div&gt;&quot;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>可以看到<code>beforeCreate</code>階段時，因為還沒init，所以data 跟 el 都取不到。</li>
+<li><code>created</code>時 可以取到data 但還沒確認el。</li>
+<li><code>beforeMount</code>時可以取得模板。</li>
+<li><code>mounted</code>時取得模板並綁定屬性。</li>
+</ol>
+<h3 id="更新時的console"><a href="#更新時的console" class="headerlink" title="更新時的console:"></a>更新時的console:</h3><p>第一個數字為畫面上的html取得的，第二個數字為this.count</p>
+<p>這時你可能會有一個疑惑為什麼在beforeUpdate時的this.count 不是0，而是1。</p>
+<p>因為這邊的this.count已經是觸發更新後的數字，只是尚未呈現在畫面上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;beforeUpdate: &quot; &quot;0&quot; 1</span><br><span class="line">&quot;updated: &quot; &quot;1&quot; 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="此範例中注意事項"><a href="#此範例中注意事項" class="headerlink" title="此範例中注意事項"></a>此範例中注意事項</h3><p>在練習這個範例時除了遇到<code>beforeUpdate</code>時的疑問外，還有幾個需要注意的點：</p>
+<ol>
+<li>如果vue 實體中沒有綁定<code>el</code> 的話，<code>beforeMount</code>以後的hook function都不能使用。</li>
+<li>destroyed是銷毀監聽方法、子元素、data，但html要自己手動清除。</li>
+<li>destroyed要記得寫在el綁定的元素外面，不然摧毀事件會被刪除。</li>
+</ol>
+<h3 id="lt-keep-alive-gt-lt-keep-alive-gt"><a href="#lt-keep-alive-gt-lt-keep-alive-gt" class="headerlink" title="&lt;keep-alive&gt; &lt;/keep-alive&gt;"></a><code>&lt;keep-alive&gt; &lt;/keep-alive&gt;</code></h3><p>用途：舉個例子做頁籤時或填寫表單時還是希望保留狀態，保留資料狀態不將實體<code>destroyed</code>。<br>使用該標籤時不會進入<code>beforeDestroy</code>與<code>destroyed</code>，而是變成<code>activated</code>與<code>deactivated</code>。</p>
+<h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>了解Vue實體的生命週期可以讓你在對的階段做對的事。</p>
+<p>舉個例子，像是透過ajax取得資料時應該要寫實體建立階段的<code>created</code>之後， 也就是<code>created</code>、<code>beforeMount</code> 與 <code>mounted</code>。<br><img src="https://i.imgur.com/9p9T8DL.png" alt></p>
+<p>有人是建議放<code>created</code>，不建議在<code>mounted</code> 因為網頁畫面可能會有一段空白，但可以用loading 圖蓋過。</p>
+<p>也有人建議放<code>mounted</code>，理由是所有DOM都準備好才塞資料</p>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><ul>
+<li>五倍紅寶石-Vue.js 與 Vuex 前端開發實戰課程</li>
+<li><a href="https://cn.vuejs.org/v2" target="_blank" rel="noopener">https://cn.vuejs.org/v2</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+            
+              <a href="/tags/vue/" rel="tag"># vue</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/spring-boot/20190914/3254661455/" rel="next" title="Mac ＆ Win7 port 佔用處理方式 (kill Process)">
+                  <i class="fa fa-chevron-left"></i> Mac ＆ Win7 port 佔用處理方式 (kill Process)
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/hexo/20190924/3166793059/" rel="prev" title="使用GitHub + Hexo 建立個人blogger">
+                  使用GitHub + Hexo 建立個人blogger <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-生命週期"><span class="nav-number">1.</span> <span class="nav-text">Vue 生命週期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-new-Vue"><span class="nav-number">1.1.</span> <span class="nav-text">1.new Vue() :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-beforeCreate"><span class="nav-number">1.2.</span> <span class="nav-text">2.beforeCreate :</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Observe-Data-amp-Init-Events："><span class="nav-number">1.3.</span> <span class="nav-text">3.Observe Data &amp; Init Events：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Created："><span class="nav-number">1.4.</span> <span class="nav-text"> 4.Created：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-判斷實體裡面的-el是否有被掛載"><span class="nav-number">1.5.</span> <span class="nav-text">5.判斷實體裡面的$.el是否有被掛載</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-判斷實體內是否有template-屬性"><span class="nav-number">1.6.</span> <span class="nav-text">6.判斷實體內是否有template 屬性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-beforeMount："><span class="nav-number">1.7.</span> <span class="nav-text"> 7.beforeMount：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-模板-template-編譯與掛載"><span class="nav-number">1.8.</span> <span class="nav-text">8.模板(template)編譯與掛載</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-mounted："><span class="nav-number">1.9.</span> <span class="nav-text">  9.mounted：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-beforeUpdate："><span class="nav-number">1.10.</span> <span class="nav-text">10.beforeUpdate：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-Create-el-…-and-replace-el-："><span class="nav-number">1.11.</span> <span class="nav-text">11.Create $.el ….and replace el ：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-updated："><span class="nav-number">1.12.</span> <span class="nav-text"> 12.updated：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-activated："><span class="nav-number">1.13.</span> <span class="nav-text">13. activated：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-deactivated："><span class="nav-number">1.14.</span> <span class="nav-text">14.deactivated：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-beforeDestroy："><span class="nav-number">1.15.</span> <span class="nav-text">15. beforeDestroy：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-destroyed："><span class="nav-number">1.16.</span> <span class="nav-text">16.destroyed：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#範例程式"><span class="nav-number">2.</span> <span class="nav-text">範例程式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#更新時的console"><span class="nav-number">2.1.</span> <span class="nav-text">更新時的console:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#此範例中注意事項"><span class="nav-number">2.2.</span> <span class="nav-text">此範例中注意事項</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-keep-alive-gt-lt-keep-alive-gt"><span class="nav-number">2.3.</span> <span class="nav-text">&lt;keep-alive&gt; &lt;/keep-alive&gt;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#總結"><span class="nav-number">3.</span> <span class="nav-text">總結</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#參考資料"><span class="nav-number">4.</span> <span class="nav-text">參考資料</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">roi lin</p>
+  <div class="site-description" itemprop="description">在此紀錄我所學到的東西.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分類</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">標籤</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/sinyilin" title="GitHub &rarr; https://github.com/sinyilin" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:fabien705cccc@gmail.com" title="E-Mail &rarr; mailto:fabien705cccc@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+
+
+	<!--google_adsense-->
+	
+ 	 <div class="links-of-blogroll-title">
+    	<i class="fa fa-google"></i> AdSense
+    	<ins class="adsbygoogle"
+       		style="display:block"
+        	data-ad-client="ca-pub-1313960520162823"
+        	data-ad-slot="0"
+        	data-ad-format="auto"
+        	data-full-width-responsive="true"></ins>
+    	<script>
+      		(adsbygoogle = window.adsbygoogle || []).push({});
+    	</script>
+  	</div>
+	
+	<!--/google_adsense-->
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roi lin</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="訪客總數">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+    <span class="post-meta-divider">|</span>
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="總瀏覽次數">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function disqus_config() {
+    this.page.url = "https://sinyilin.github.io/vue/20190917/3105721319/";
+    this.page.identifier = "vue/20190917/3105721319/";
+    this.page.title = 'Vue 生命週期 (Lifecycle)';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://roi-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
